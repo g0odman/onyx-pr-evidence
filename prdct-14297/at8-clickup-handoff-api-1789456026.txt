@@ -1,0 +1,98 @@
+evidence/37 — ClickUp handoff, API READ-BACK modality (APPROVED substitute for the identity-walled browser screenshot)
+==============================================================================================================
+
+WHY THIS IS AN API READ-BACK, NOT A BROWSER SCREENSHOT (37-clickup-handoff.png):
+  The agent identity has no linked ClickUp browser session (SSO not linked; API invite enterprise-gated TEAM_110;
+  browser signup reCAPTCHA-walled RECAP_003). Research reconciled the modality and the FACTORY_OWNER approved it:
+    Approver:  May  (Slack U09R2BCFDLG, FACTORY_OWNER)
+    Verbatim:  "ok"
+    When/where: ts 1789452777.990729, DM D0B6V65HCEN, thread 1789440197.719629
+    Permalink: https://onyx-security.slack.com/archives/D0B6V65HCEN/p1789452777990729?thread_ts=1789440197.719629&cid=D0B6V65HCEN
+  (Approval re-poll of record: evidence/32f-reconciliation-repoll.txt.)
+
+LIVE AUTHENTICATED REST READ (re-runnable by verify with the same $CLICKUP_API_TOKEN):
+  GET https://api.clickup.com/api/v2/task/86bc0b35t/comment
+  Header: Authorization: $CLICKUP_API_TOKEN
+  Result: HTTP 200 — raw response saved verbatim in evidence/37-clickup-handoff-api.json (this is that response's rendering).
+  Both target comments below are extracted verbatim from that raw response; nothing is hand-authored.
+
+--------------------------------------------------------------------------------------------------------------
+COMMENT id: 90140256657902   [ACTIVE handoff — the exact-final-SHA Wiz-rescan handoff to Moshe/security]
+  author:  Coder Agent  <coder@onyx.security>  (id 94221387)
+  created: 2026-09-15 03:38:03 UTC   (epoch_ms 1789443483230)
+  resolved: None
+  --- full body (verbatim) ---
+  | 🔐 Security handoff for Wiz verification (UPDATED — exact FINAL commit) — @Moshe Kanooni
+  | 
+  | This SUPERSEDES my earlier handoff on this task (which named 06a79ee). Use the exact FINAL head of the PR for the Wiz rescan.
+  | 
+  | Exact commit for rescan: 5bc5960aeed22d3c671178f735139a96d19337af  (branch factory-eval-v32/PRDCT-14297 — current PR head)
+  | PR: https://github.com/onyxsecurity/onyx/pull/13460  (open, CI green, not merged — awaiting human review + merge)
+  | Why the SHA changed: three review-round commits landed after 06a79ee (streamdown-v2 code-highlighting fix + openai/ahooks review nits); frontend/pnpm-lock.yaml differs between them, so a rescan of 06a79ee would scan a tree that is NOT what ships.
+  | 
+  | What changed (net diff vs main = 8 files, dependency/lockfile only):
+  | • @tiptap/* → 3.31.3 (GHSA-j95f-988m-3j2f)
+  | • EOL removed: hast, intersection-observer, node-domexception
+  | • shiki-stream, whatwg-encoding → documented time-limited exceptions (no maintained successor; owner + exposure in PR body)
+  | • streamdown 1.x→2.x + @streamdown/code (shiki) restoring code-block highlighting; openai v5 in playground
+  | Full EOL disposition (all 5 findings) + before/after lockfile deltas are in the PR body.
+  | 
+  | Extension lint-check disclosure (red-but-PRE-EXISTING — disclosed, not hidden):
+  | chrome-extension `task lint-check` is RED, but every error pre-exists on origin/main itself, not introduced here:
+  | • biome: 38 errors (real exit 1) — identical normalized error-location sets on this branch and a fresh origin/main worktree → 0 NEW.
+  | • tsc: 24 errors (real exit 2) — identical sorted sets on both trees → 0 NEW.
+  | • git diff origin/main HEAD -- chrome-extension/ biome.json is EMPTY (this PR changes zero extension files).
+  | The extension-pr.yaml CI jobs are expected-SKIPPED on this head (dorny paths-filter, no chrome-extension diff). Evidence on the box: evidence/32, 32b, 32c, 32d.
+  | 
+  | This is an evidence/remediation handoff for your rescan — not a Wiz-closure action on my side.
+
+--------------------------------------------------------------------------------------------------------------
+COMMENT id: 90140256609640   [SUPERSEDED round-1 handoff — retained with an explicit banner so the ticket carries no conflicting "exact" commit]
+  author:  Coder Agent  <coder@onyx.security>  (id 94221387)
+  created: 2026-09-14 23:45:53 UTC   (epoch_ms 1789429553165)
+  resolved: None
+  --- full body (verbatim) ---
+  | ⚠️ SUPERSEDED — do NOT rescan against the commit named below.
+  | 
+  | This handoff cited 06a79ee, which is NO LONGER the PR head. Three review-round commits landed after it
+  | (streamdown-v2 code-highlighting fix + review nits), changing frontend/pnpm-lock.yaml. Use the exact
+  | FINAL head instead:
+  | 
+  |    Wiz rescan commit → 5bc5960aeed22d3c671178f735139a96d19337af  (current head of PR #13460)
+  | 
+  | See the newer handoff comment on this task (the one titled "Security handoff for Wiz verification
+  | (UPDATED — exact FINAL commit)") for the full, current details. The text below is retained for history only.
+  | 
+  | ────────────────────────────────────────────────────────🔐 Security handoff for Wiz verification — @Moshe Kanooni
+  | 
+  | The remaining frontend + extension Wiz findings for this ticket are remediated and proven. Handing over the exact commit + evidence per the acceptance criteria (no Wiz access needed on my side — this is for your rescan/closure).
+  | 
+  | Exact commit: 06a79eeeaed5932ba93b279eee14982252c2e728 (branch factory-eval-v32/PRDCT-14297)
+  | PR: https://github.com/onyxsecurity/onyx/pull/13460 (open, CI green, not merged — awaiting human review + merge)
+  | 
+  | **What changed (net diff vs main = 8 files, dependency/lockfile only):**
+  | @tiptap/* suite → 3.31.3 (GHSA-j95f-988m-3j2f, ReDoS) — delivered here.
+  | EOL removed (0 lockfile entries): hast@1.0.0 (streamdown 2.x), intersection-observer@0.12.2 (ahooks 3.10.0 override), node-domexception@1.0.0 (openai v5).
+  | 
+  | **Inherited from main (already remediated between the frozen base and now; this PR proves they still hold, makes zero further changes):**
+  | maplibre-gl → 6.9.0 (CVE-2026-85061, attribution XSS — both Critical records). chrome-extension/ is byte-identical to main.
+  | js-yaml → 4.3.2 (CVE-2026-84375, YAML parse DoS).
+  | 
+  | EOL requiring your security approval (proposed time-limited exceptions — no maintained successor published):
+  | shiki-stream@0.1.5 — frontend render-path syntax highlighting; no untrusted-input parse path; owner: frontend.
+  | whatwg-encoding@3.1.1 — dev/build-tooling only (jsdom test env + @crxjs/vite-plugin build), never shipped in the extension runtime; owner: extension.
+  | 
+  | How it was proven (all on real surfaces, no mocks): frontend lockfile + frozen install; extension yarn.lock + frozen install; frontend CI targets (lint/build/test at node:24); playground next build; tiptap rich-text editor exercised on the real product UI (/posture-policies/create, real SSO, Create/edit-save 200 through Kong→DB, guard blocks empty, 0 editor console errors); maplibre 6.x Attack Origins map rendered+zoomed in a real browser; chrome-extension build+test (1725 tests, node:24) + the built extension loaded unpacked into real Chrome on a live site. Full recordings + screenshots are attached in the PR body and in the run's collected evidence bundle.
+  | 
+  | Known limitation (transparency): extension task lint-check reports 38 pre-existing biome style errors in another team's DLP/content test files (reproduced on a pristine origin/main worktree); out of scope for this dependency-remediation ticket and this PR makes zero chrome-extension/ changes. The extension-pr CI workflow's path filter doesn't match this PR's diff, so it doesn't run here.
+  | 
+  | Ready for Wiz rescan against commit 06a79ee once merged.
+
+--------------------------------------------------------------------------------------------------------------
+KEY-CONTENT ASSERTIONS (all TRUE against the raw response above):
+  [90140256657902] contains exact final SHA 5bc5960aeed22d3c671178f735139a96d19337af : True
+  [90140256657902] contains PR #13460 link (github.com/onyxsecurity/onyx/pull/13460)   : True
+  [90140256657902] addressed to Moshe / security                                       : True
+  [90140256609640] carries the ⚠️ SUPERSEDED banner                                    : True
+  [90140256609640] redirects the rescan to the final SHA 5bc5960aee                     : True
+  [90140256609640] retains the now-stale 06a79ee for history                            : True
